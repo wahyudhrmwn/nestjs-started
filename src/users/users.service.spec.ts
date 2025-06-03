@@ -2,6 +2,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 // Import service yang akan ditest
 import { UsersService } from './users.service';
+// Import getRepositoryToken untuk mock repository
+import { getRepositoryToken } from '@nestjs/typeorm';
+// Import entity User
+import { User } from './entities/user.entity';
 
 /**
  * Test suite untuk UsersService
@@ -11,17 +15,33 @@ import { UsersService } from './users.service';
 describe('UsersService', () => {
   // Deklarasi variabel untuk menyimpan instance service yang akan ditest
   let service: UsersService;
+  let mockUserRepository: jest.Mocked<any>;
 
   /**
    * beforeEach() dijalankan sebelum setiap test case
    * Berfungsi untuk setup/persiapan yang diperlukan untuk testing
    */
   beforeEach(async () => {
+    // Membuat mock repository dengan jest
+    mockUserRepository = {
+      create: jest.fn(),
+      save: jest.fn(),
+      find: jest.fn(),
+      findOne: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+    };
+
     // Membuat testing module menggunakan Test.createTestingModule()
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService], // Service yang akan ditest
-      // NOTE: Dalam test yang sesungguhnya, perlu mock repository
-      // karena service ini membutuhkan database repository
+      providers: [
+        UsersService, // Service yang akan ditest
+        {
+          // Mock UserRepository menggunakan getRepositoryToken
+          provide: getRepositoryToken(User),
+          useValue: mockUserRepository,
+        },
+      ],
     }).compile(); // compile() untuk build module testing
 
     // Mengambil instance UsersService dari testing module
