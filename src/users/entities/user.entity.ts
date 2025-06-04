@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 /**
  * Entity User untuk merepresentasikan tabel users di database
@@ -33,4 +33,16 @@ export class User {
    */
   @Column()
   email: string;
+
+  @Column()
+  role: string;
+
+  @Column()
+  status: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;  
 }

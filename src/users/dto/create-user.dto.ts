@@ -16,5 +16,19 @@ export class CreateUserDto {
    * Biasanya akan ditambahkan validasi email format
    */
   email: string;
+
+  /**
+   * Role user yang akan dibuat
+   * Type: string - wajib diisi dan harus unique
+   * Biasanya akan ditambahkan validasi role format
+   */
+  role: string;
+
+  /**
+   * Status user yang akan dibuat
+   * Type: string - wajib diisi dan harus unique
+   * Biasanya akan ditambahkan validasi status format
+   */
+  status: string;
 }
   
